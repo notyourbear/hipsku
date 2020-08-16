@@ -1,0 +1,20 @@
+{
+  "name": "hipsku",
+  "version": "1.0.0",
+  "description": "generate hipster haikus",
+  "main": "index.js",
+  "scripts": {
+    "start": "parcel ./src/index.html",
+    "build": "parcel build ./src/index.html"
+  },
+  "author": "Patrick Racenberg",
+  "license": "MIT",
+  "devDependencies": {
+    "@babel/core": "^7.11.1",
+    "@babel/plugin-transform-runtime": "^7.11.0",
+    "parcel-bundler": "^1.12.4"
+  },
+  "dependencies": {
+    "syllable": "^4.1.0"
+  }
+}

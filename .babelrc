@@ -1,0 +1,16 @@
+{
+  "presets": [
+    [
+      "@babel/env",
+      {
+        "targets": {
+          "edge": "18",
+          "firefox": "77",
+          "chrome": "71",
+          "safari": "12.1"
+        }
+      }
+    ]
+  ],
+  "plugins": ["@babel/plugin-transform-runtime"]
+}
