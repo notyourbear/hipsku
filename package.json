@@ -2,16 +2,26 @@
   "name": "hipsku",
   "version": "1.0.0",
   "description": "generate hipster haikus",
-  "main": "index.js",
+  "main": "index.html",
   "scripts": {
     "start": "parcel ./src/index.html",
-    "build": "parcel build ./src/index.html"
+    "build": "parcel build ./src/index.html",
+    "test": "jest"
+  },
+  "jest": {
+    "automock": false,
+    "setupFiles": [
+      "./init/jest.js"
+    ]
   },
   "author": "Patrick Racenberg",
   "license": "MIT",
   "devDependencies": {
     "@babel/core": "^7.11.1",
     "@babel/plugin-transform-runtime": "^7.11.0",
+    "babel-jest": "^26.3.0",
+    "jest": "^26.4.0",
+    "jest-fetch-mock": "^3.0.3",
     "parcel-bundler": "^1.12.4"
   },
   "dependencies": {

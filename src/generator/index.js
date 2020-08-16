@@ -1,7 +1,7 @@
 import syllable from "syllable";
 import markovChain from "./markov";
 import { sample } from "./utils";
-import api from "../api";
+import fetchData from "../api";
 
 const LINECOUNT = [3, 5, 3];
 
@@ -45,8 +45,8 @@ export const generateLine = (state = {}, syllableCount = 3) => {
   return phrase.trim();
 };
 
-const generate = () => {
-  return api.fetchData(50).then((data) => {
+const generateHaiku = () => {
+  return fetchData(50).then((data) => {
     const state = markovChain(data, 1);
     const line = generateLine(state);
     const poem = LINECOUNT.reduce(
@@ -58,4 +58,4 @@ const generate = () => {
   });
 };
 
-export default generate;
+export default generateHaiku;

@@ -1,5 +1,3 @@
-import generate from "./generator";
+import generateHaiku from "./generator";
 
-console.log("hello world");
-
-console.log("generating now:", generate());
+console.log("generating now:", generateHaiku());

@@ -1009,7 +1009,7 @@ exports.default = _default;
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-exports.default = exports.fetchMockData = exports.fetchData = void 0;
+exports.default = exports.fetchData = void 0;
 
 var _mockData = _interopRequireDefault(require("./mockData"));
 
@@ -1028,20 +1028,13 @@ var fetchData = function fetchData() {
     }
 
     return data;
+  }).catch(function (e) {
+    return _mockData.default;
   });
 };
 
 exports.fetchData = fetchData;
-
-var fetchMockData = function fetchMockData() {
-  return Promise.resolve(_mockData.default);
-};
-
-exports.fetchMockData = fetchMockData;
-var _default = {
-  fetchData: fetchData,
-  fetchMockData: fetchMockData
-};
+var _default = fetchData;
 exports.default = _default;
 },{"./mockData":"api/mockData.js"}],"generator/index.js":[function(require,module,exports) {
 "use strict";
@@ -1122,7 +1115,7 @@ var generateLine = function generateLine() {
 exports.generateLine = generateLine;
 
 var generate = function generate() {
-  return _api.default.fetchData(50).then(function (data) {
+  return (0, _api.default)(50).then(function (data) {
     var state = (0, _markov.default)(data, 1);
     var line = generateLine(state);
     var poem = LINECOUNT.reduce(function (acc, count) {

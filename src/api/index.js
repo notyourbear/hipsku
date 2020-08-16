@@ -10,11 +10,9 @@ export const fetchData = (sentenceNumber = 50) =>
         return data[0];
       }
       return data;
+    })
+    .catch((e) => {
+      return MOCKDATA;
     });
 
-export const fetchMockData = () => Promise.resolve(MOCKDATA);
-
-export default {
-  fetchData,
-  fetchMockData,
-};
+export default fetchData;
