@@ -5,6 +5,8 @@ import fetchData from "../api";
 
 const LINECOUNT = [3, 5, 3];
 
+// selects a single word with a specific syllable count
+// used in generateLine to add additional syllables, if necessary
 export const pickWord = (state = {}, syllableCount = 1) => {
   let words = Object.keys(state);
   let word = words[0];
@@ -18,6 +20,7 @@ export const pickWord = (state = {}, syllableCount = 1) => {
   return word;
 };
 
+// creates a haiku line from the passed in markov chain
 export const generateLine = (state = {}, syllableCount = 3) => {
   const stateValues = Object.values(state);
 
@@ -27,9 +30,8 @@ export const generateLine = (state = {}, syllableCount = 3) => {
   while (count < syllableCount) {
     let lineOptions = sample(stateValues);
     const { value } = sample(lineOptions.value);
-    console.log({ lineOptions, value });
-
     const addedSyllables = syllable(value);
+
     if (count + addedSyllables <= syllableCount) {
       count += addedSyllables;
       phrase = `${value} ${phrase}`;
@@ -45,16 +47,16 @@ export const generateLine = (state = {}, syllableCount = 3) => {
   return phrase.trim();
 };
 
+// returns a haiku form an api call
 const generateHaiku = () => {
   return fetchData(50).then((data) => {
     const state = markovChain(data, 1);
-    const line = generateLine(state);
     const poem = LINECOUNT.reduce(
       (acc, count) => [...acc, generateLine(state, count)],
       []
     );
-    console.log({ poem });
-    return state;
+
+    return poem;
   });
 };
 
