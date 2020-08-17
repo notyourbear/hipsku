@@ -1,0 +1,19 @@
+body {
+  font-size: 10px;
+}
+
+.haiku {
+  height: 100vh;
+  width: 100vw;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+}
+
+.line-1,
+.line-2,
+.line-3 {
+  font-size: 1.5rem;
+  margin: 1rem;
+}

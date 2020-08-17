@@ -980,7 +980,7 @@ exports.randomInt = randomInt;
 var sample = function sample() {
   var array = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : [];
   var min = 0;
-  var max = array.length === 1 ? 0 : array.length;
+  var max = array.length - 1;
   var index = randomInt(min, max);
   return {
     value: array[index],
@@ -1056,7 +1056,8 @@ var _api = _interopRequireDefault(require("../api"));
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-var LINECOUNT = [3, 5, 3];
+var LINECOUNT = [3, 5, 3]; // selects a single word with a specific syllable count
+// used in generateLine to add additional syllables, if necessary
 
 var pickWord = function pickWord() {
   var state = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};
@@ -1074,7 +1075,8 @@ var pickWord = function pickWord() {
   }
 
   return word;
-};
+}; // creates a haiku line from the passed in markov chain
+
 
 exports.pickWord = pickWord;
 
@@ -1091,10 +1093,6 @@ var generateLine = function generateLine() {
     var _sample2 = (0, _utils.sample)(lineOptions.value),
         value = _sample2.value;
 
-    console.log({
-      lineOptions: lineOptions,
-      value: value
-    });
     var addedSyllables = (0, _syllable.default)(value);
 
     if (count + addedSyllables <= syllableCount) {
@@ -1110,35 +1108,38 @@ var generateLine = function generateLine() {
   }
 
   return phrase.trim();
-};
+}; // returns a haiku form an api call
+
 
 exports.generateLine = generateLine;
 
-var generate = function generate() {
+var generateHaiku = function generateHaiku() {
   return (0, _api.default)(50).then(function (data) {
     var state = (0, _markov.default)(data, 1);
-    var line = generateLine(state);
     var poem = LINECOUNT.reduce(function (acc, count) {
       return [].concat((0, _toConsumableArray2.default)(acc), [generateLine(state, count)]);
     }, []);
-    console.log({
-      poem: poem
-    });
-    return state;
+    return poem;
   });
 };
 
-var _default = generate;
+var _default = generateHaiku;
 exports.default = _default;
 },{"@babel/runtime/helpers/toConsumableArray":"../node_modules/@babel/runtime/helpers/toConsumableArray.js","syllable":"../node_modules/syllable/index.js","./markov":"generator/markov.js","./utils":"generator/utils.js","../api":"api/index.js"}],"index.js":[function(require,module,exports) {
 "use strict";
 
-var _generator = _interopRequireDefault(require("./generator"));
+var _generator = _interopRequireWildcard(require("./generator"));
 
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+function _getRequireWildcardCache() { if (typeof WeakMap !== "function") return null; var cache = new WeakMap(); _getRequireWildcardCache = function () { return cache; }; return cache; }
 
-console.log("hello world");
-console.log("generating now:", (0, _generator.default)());
+function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } if (obj === null || typeof obj !== "object" && typeof obj !== "function") { return { default: obj }; } var cache = _getRequireWildcardCache(); if (cache && cache.has(obj)) { return cache.get(obj); } var newObj = {}; var hasPropertyDescriptor = Object.defineProperty && Object.getOwnPropertyDescriptor; for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) { var desc = hasPropertyDescriptor ? Object.getOwnPropertyDescriptor(obj, key) : null; if (desc && (desc.get || desc.set)) { Object.defineProperty(newObj, key, desc); } else { newObj[key] = obj[key]; } } } newObj.default = obj; if (cache) { cache.set(obj, newObj); } return newObj; }
+
+var querySelectors = [".line-1", ".line-2", ".line-3"];
+(0, _generator.default)().then(function (hipsku) {
+  querySelectors.forEach(function (selector, index) {
+    return document.querySelector(selector).innerHTML = hipsku[index];
+  });
+});
 },{"./generator":"generator/index.js"}],"../node_modules/parcel-bundler/src/builtins/hmr-runtime.js":[function(require,module,exports) {
 var global = arguments[3];
 var OVERLAY_ID = '__parcel__error__overlay__';
@@ -1167,7 +1168,7 @@ var parent = module.bundle.parent;
 if ((!parent || !parent.isParcelRequire) && typeof WebSocket !== 'undefined') {
   var hostname = "" || location.hostname;
   var protocol = location.protocol === 'https:' ? 'wss' : 'ws';
-  var ws = new WebSocket(protocol + '://' + hostname + ':' + "51235" + '/');
+  var ws = new WebSocket(protocol + '://' + hostname + ':' + "53371" + '/');
 
   ws.onmessage = function (event) {
     checkedAssets = {};
