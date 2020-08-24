@@ -176,7 +176,73 @@ function _toConsumableArray(arr) {
 }
 
 module.exports = _toConsumableArray;
-},{"./arrayWithoutHoles":"../node_modules/@babel/runtime/helpers/arrayWithoutHoles.js","./iterableToArray":"../node_modules/@babel/runtime/helpers/iterableToArray.js","./unsupportedIterableToArray":"../node_modules/@babel/runtime/helpers/unsupportedIterableToArray.js","./nonIterableSpread":"../node_modules/@babel/runtime/helpers/nonIterableSpread.js"}],"../node_modules/pluralize/pluralize.js":[function(require,module,exports) {
+},{"./arrayWithoutHoles":"../node_modules/@babel/runtime/helpers/arrayWithoutHoles.js","./iterableToArray":"../node_modules/@babel/runtime/helpers/iterableToArray.js","./unsupportedIterableToArray":"../node_modules/@babel/runtime/helpers/unsupportedIterableToArray.js","./nonIterableSpread":"../node_modules/@babel/runtime/helpers/nonIterableSpread.js"}],"generator/markov.js":[function(require,module,exports) {
+"use strict";
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.default = void 0;
+
+var _toConsumableArray2 = _interopRequireDefault(require("@babel/runtime/helpers/toConsumableArray"));
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+var markovChain = function markovChain() {
+  var sentences = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : "";
+  var cognitionLevel = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : 1;
+  var state = {};
+  var arrayOfWords = sentences.split(" ");
+  arrayOfWords.forEach(function (word, index, array) {
+    if (!state[word]) {
+      state[word] = [];
+    }
+
+    var phrase = array.slice(index, index + cognitionLevel + 1).join(" ");
+    var isPhraseRecorded = state[word].includes(phrase);
+
+    if (!isPhraseRecorded) {
+      state[word] = [].concat((0, _toConsumableArray2.default)(state[word]), [phrase]);
+    }
+  });
+  return state;
+};
+
+var _default = markovChain;
+exports.default = _default;
+},{"@babel/runtime/helpers/toConsumableArray":"../node_modules/@babel/runtime/helpers/toConsumableArray.js"}],"generator/dictionary.js":[function(require,module,exports) {
+"use strict";
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.DICTIONARY = void 0;
+// some hipster words are hard to understand for
+// the syllable counter. so we push those in here instead.
+var DICTIONARY = {
+  "+1": 2,
+  "3": 1,
+  "8-bit": 2,
+  "90's": 2,
+  "cold-pressed": 2,
+  "pbr&b": 5,
+  axe: 1,
+  beer: 1,
+  chicharrones: 4,
+  cliche: 2,
+  diy: 3,
+  iceland: 2,
+  intelligentsia: 5,
+  mlkshk: 2,
+  scenester: 2,
+  shoreditch: 2,
+  tbh: 3,
+  tousled: 2,
+  typewriter: 3,
+  xoxo: 4
+};
+exports.DICTIONARY = DICTIONARY;
+},{}],"../node_modules/pluralize/pluralize.js":[function(require,module,exports) {
 var define;
 function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function (obj) { return typeof obj; }; } else { _typeof = function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
 
@@ -927,47 +993,19 @@ function syllable(value) {
   }
 }
 
-},{"pluralize":"../node_modules/pluralize/pluralize.js","normalize-strings":"../node_modules/normalize-strings/index.js","./problematic.json":"../node_modules/syllable/problematic.json"}],"generator/markov.js":[function(require,module,exports) {
+},{"pluralize":"../node_modules/pluralize/pluralize.js","normalize-strings":"../node_modules/normalize-strings/index.js","./problematic.json":"../node_modules/syllable/problematic.json"}],"generator/utils.js":[function(require,module,exports) {
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-exports.default = void 0;
+exports.default = exports.countSyllables = exports.sample = exports.randomInt = void 0;
 
-var _toConsumableArray2 = _interopRequireDefault(require("@babel/runtime/helpers/toConsumableArray"));
+var _dictionary = require("./dictionary");
+
+var _syllable = _interopRequireDefault(require("syllable"));
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-var markovChain = function markovChain() {
-  var sentences = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : "";
-  var cognitionLevel = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : 1;
-  var state = {};
-  var arrayOfWords = sentences.split(" ");
-  arrayOfWords.forEach(function (word, index, array) {
-    if (!state[word]) {
-      state[word] = [];
-    }
-
-    var phrase = array.slice(index, index + cognitionLevel + 1).join(" ");
-    var isPhraseRecorded = state[word].includes(phrase);
-
-    if (!isPhraseRecorded) {
-      state[word] = [].concat((0, _toConsumableArray2.default)(state[word]), [phrase]);
-    }
-  });
-  return state;
-};
-
-var _default = markovChain;
-exports.default = _default;
-},{"@babel/runtime/helpers/toConsumableArray":"../node_modules/@babel/runtime/helpers/toConsumableArray.js"}],"generator/utils.js":[function(require,module,exports) {
-"use strict";
-
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-exports.default = exports.sample = exports.randomInt = void 0;
 
 var randomInt = function randomInt() {
   var min = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : 0;
@@ -989,11 +1027,21 @@ var sample = function sample() {
 };
 
 exports.sample = sample;
+
+var countSyllables = function countSyllables() {
+  var word = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : "";
+  return word.split(" ").reduce(function (sum, word) {
+    var count = _dictionary.DICTIONARY[word.toLowerCase()] || (0, _syllable.default)(word);
+    return sum + count;
+  }, 0);
+};
+
+exports.countSyllables = countSyllables;
 var _default = {
   sample: sample
 };
 exports.default = _default;
-},{}],"api/mockData.js":[function(require,module,exports) {
+},{"./dictionary":"generator/dictionary.js","syllable":"../node_modules/syllable/index.js"}],"api/mockData.js":[function(require,module,exports) {
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -1046,8 +1094,6 @@ exports.default = exports.generateLine = exports.pickWord = void 0;
 
 var _toConsumableArray2 = _interopRequireDefault(require("@babel/runtime/helpers/toConsumableArray"));
 
-var _syllable = _interopRequireDefault(require("syllable"));
-
 var _markov = _interopRequireDefault(require("./markov"));
 
 var _utils = require("./utils");
@@ -1061,20 +1107,16 @@ var LINECOUNT = [3, 5, 3]; // selects a single word with a specific syllable cou
 
 var pickWord = function pickWord() {
   var state = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};
-  var syllableCount = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : 1;
+  var desiredSyllableCount = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : 1;
   var words = Object.keys(state);
-  var word = words[0];
+  var word = (0, _utils.sample)(words);
 
-  while ((0, _syllable.default)(word) !== syllableCount) {
-    var _sample = (0, _utils.sample)(words),
-        index = _sample.index,
-        value = _sample.value;
-
-    words = [].concat((0, _toConsumableArray2.default)(words.slice(0, index)), (0, _toConsumableArray2.default)(words.slice(index + 1)));
-    word = value;
+  while ((0, _utils.countSyllables)(word.value) !== desiredSyllableCount) {
+    words = [].concat((0, _toConsumableArray2.default)(words.slice(0, word.index)), (0, _toConsumableArray2.default)(words.slice(word.index + 1)));
+    word = (0, _utils.sample)(words);
   }
 
-  return word;
+  return word.value;
 }; // creates a haiku line from the passed in markov chain
 
 
@@ -1090,10 +1132,10 @@ var generateLine = function generateLine() {
   while (count < syllableCount) {
     var lineOptions = (0, _utils.sample)(stateValues);
 
-    var _sample2 = (0, _utils.sample)(lineOptions.value),
-        value = _sample2.value;
+    var _sample = (0, _utils.sample)(lineOptions.value),
+        value = _sample.value;
 
-    var addedSyllables = (0, _syllable.default)(value);
+    var addedSyllables = (0, _utils.countSyllables)(value);
 
     if (count + addedSyllables <= syllableCount) {
       count += addedSyllables;
@@ -1115,9 +1157,9 @@ exports.generateLine = generateLine;
 
 var generateHaiku = function generateHaiku() {
   return (0, _api.default)(50).then(function (data) {
-    var state = (0, _markov.default)(data, 1);
-    var poem = LINECOUNT.reduce(function (acc, count) {
-      return [].concat((0, _toConsumableArray2.default)(acc), [generateLine(state, count)]);
+    var states = [(0, _markov.default)(data, 1), (0, _markov.default)(data, 2), (0, _markov.default)(data, 1)];
+    var poem = LINECOUNT.reduce(function (acc, count, i) {
+      return [].concat((0, _toConsumableArray2.default)(acc), [generateLine(states[i], count)]);
     }, []);
     return poem;
   });
@@ -1125,7 +1167,7 @@ var generateHaiku = function generateHaiku() {
 
 var _default = generateHaiku;
 exports.default = _default;
-},{"@babel/runtime/helpers/toConsumableArray":"../node_modules/@babel/runtime/helpers/toConsumableArray.js","syllable":"../node_modules/syllable/index.js","./markov":"generator/markov.js","./utils":"generator/utils.js","../api":"api/index.js"}],"index.js":[function(require,module,exports) {
+},{"@babel/runtime/helpers/toConsumableArray":"../node_modules/@babel/runtime/helpers/toConsumableArray.js","./markov":"generator/markov.js","./utils":"generator/utils.js","../api":"api/index.js"}],"index.js":[function(require,module,exports) {
 "use strict";
 
 var _generator = _interopRequireWildcard(require("./generator"));
@@ -1168,7 +1210,7 @@ var parent = module.bundle.parent;
 if ((!parent || !parent.isParcelRequire) && typeof WebSocket !== 'undefined') {
   var hostname = "" || location.hostname;
   var protocol = location.protocol === 'https:' ? 'wss' : 'ws';
-  var ws = new WebSocket(protocol + '://' + hostname + ':' + "53371" + '/');
+  var ws = new WebSocket(protocol + '://' + hostname + ':' + "55407" + '/');
 
   ws.onmessage = function (event) {
     checkedAssets = {};

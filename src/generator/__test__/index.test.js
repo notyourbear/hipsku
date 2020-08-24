@@ -1,5 +1,5 @@
-import syllable from "syllable";
 import { enableFetchMocks } from "jest-fetch-mock";
+import { countSyllables } from "../utils";
 import generateHaiku, { pickWord, generateLine } from "../index";
 
 enableFetchMocks();
@@ -25,16 +25,16 @@ describe("generateLine", () => {
     const threeLiner = generateLine(state, 3);
     const fiveLiner = generateLine(state, 5);
 
-    expect(syllable(threeLiner)).toEqual(3);
-    expect(syllable(fiveLiner)).toEqual(5);
+    expect(countSyllables(threeLiner)).toEqual(3);
+    expect(countSyllables(fiveLiner)).toEqual(5);
   });
 });
 
 describe("generateHaiku", () => {
   it("returns a haiku from the mockded data", async () => {
     const haiku = await generateHaiku();
-    expect(syllable(haiku[0])).toEqual(3);
-    expect(syllable(haiku[1])).toEqual(5);
-    expect(syllable(haiku[2])).toEqual(3);
+    expect(countSyllables(haiku[0])).toEqual(3);
+    expect(countSyllables(haiku[1])).toEqual(5);
+    expect(countSyllables(haiku[2])).toEqual(3);
   });
 });

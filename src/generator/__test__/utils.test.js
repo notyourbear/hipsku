@@ -1,4 +1,4 @@
-import { randomInt, sample } from "../utils";
+import { randomInt, sample, countSyllables } from "../utils";
 
 describe("randomInt", () => {
   it("returns a number between 1 and 3", () => {
@@ -20,5 +20,15 @@ describe("sample", () => {
     const { value, index } = sample(array);
     expect(array.includes(value)).toBe(true);
     expect(array[index]).toBe(value);
+  });
+});
+
+describe("countSyllables", () => {
+  it("returns a value from the dictionary", () => {
+    expect(countSyllables("axe")).toBe(1);
+  });
+
+  it("returns a value not in the dictionary", () => {
+    expect(countSyllables("hello")).toBe(2);
   });
 });

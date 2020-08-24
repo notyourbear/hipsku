@@ -1,23 +1,21 @@
-import syllable from "syllable";
 import markovChain from "./markov";
-import { sample } from "./utils";
+import { sample, countSyllables, randomInt } from "./utils";
 import fetchData from "../api";
 
 const LINECOUNT = [3, 5, 3];
 
 // selects a single word with a specific syllable count
 // used in generateLine to add additional syllables, if necessary
-export const pickWord = (state = {}, syllableCount = 1) => {
+export const pickWord = (state = {}, desiredSyllableCount = 1) => {
   let words = Object.keys(state);
-  let word = words[0];
+  let word = sample(words);
 
-  while (syllable(word) !== syllableCount) {
-    let { index, value } = sample(words);
-    words = [...words.slice(0, index), ...words.slice(index + 1)];
-    word = value;
+  while (countSyllables(word.value) !== desiredSyllableCount) {
+    words = [...words.slice(0, word.index), ...words.slice(word.index + 1)];
+    word = sample(words);
   }
 
-  return word;
+  return word.value;
 };
 
 // creates a haiku line from the passed in markov chain
@@ -30,7 +28,7 @@ export const generateLine = (state = {}, syllableCount = 3) => {
   while (count < syllableCount) {
     let lineOptions = sample(stateValues);
     const { value } = sample(lineOptions.value);
-    const addedSyllables = syllable(value);
+    const addedSyllables = countSyllables(value);
 
     if (count + addedSyllables <= syllableCount) {
       count += addedSyllables;
@@ -50,9 +48,13 @@ export const generateLine = (state = {}, syllableCount = 3) => {
 // returns a haiku form an api call
 const generateHaiku = () => {
   return fetchData(50).then((data) => {
-    const state = markovChain(data, 1);
+    const states = [
+      markovChain(data, 1),
+      markovChain(data, 2),
+      markovChain(data, 1),
+    ];
     const poem = LINECOUNT.reduce(
-      (acc, count) => [...acc, generateLine(state, count)],
+      (acc, count, i) => [...acc, generateLine(states[i], count)],
       []
     );
 

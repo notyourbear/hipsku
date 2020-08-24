@@ -1,3 +1,6 @@
+import { DICTIONARY } from "./dictionary";
+import syllable from "syllable";
+
 export const randomInt = (min = 0, max = 1) =>
   Math.floor(Math.random() * (max - min + 1)) + min;
 
@@ -10,6 +13,13 @@ export const sample = (array = []) => {
     value: array[index],
     index,
   };
+};
+
+export const countSyllables = (word = "") => {
+  return word.split(" ").reduce((sum, word) => {
+    const count = DICTIONARY[word.toLowerCase()] || syllable(word);
+    return sum + count;
+  }, 0);
 };
 
 export default {
