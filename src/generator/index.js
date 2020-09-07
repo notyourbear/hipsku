@@ -1,5 +1,5 @@
 import markovChain from "./markov";
-import { sample, countSyllables, randomInt } from "./utils";
+import { sample, countSyllables } from "./utils";
 import fetchData from "../api";
 
 const LINECOUNT = [3, 5, 3];
