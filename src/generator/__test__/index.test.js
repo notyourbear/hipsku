@@ -33,8 +33,8 @@ describe("generateLine", () => {
 describe("generateHaiku", () => {
   it("returns a haiku from the mockded data", async () => {
     const haiku = await generateHaiku();
-    expect(countSyllables(haiku[0])).toEqual(3);
-    expect(countSyllables(haiku[1])).toEqual(5);
-    expect(countSyllables(haiku[2])).toEqual(3);
+    expect(countSyllables(haiku[0])).toEqual(5);
+    expect(countSyllables(haiku[1])).toEqual(7);
+    expect(countSyllables(haiku[2])).toEqual(5);
   });
 });

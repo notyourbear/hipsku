@@ -2,7 +2,7 @@ import markovChain from "./markov";
 import { sample, countSyllables } from "./utils";
 import fetchData from "../api";
 
-const LINECOUNT = [3, 5, 3];
+const LINECOUNT = [5, 7, 5];
 
 // selects a single word with a specific syllable count
 // used in generateLine to add additional syllables, if necessary
