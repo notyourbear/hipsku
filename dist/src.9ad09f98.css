@@ -26,9 +26,9 @@ body {
 .line-1,
 .line-2,
 .line-3 {
-  font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
-  font-size: 2rem;
-  margin: 1rem;
+  font-family: "Quicksand", "Helvetica Neue", Helvetica, Arial, sans-serif;
+  font-size: 1.75rem;
+  margin: 2rem;
   color: white;
 }
 
