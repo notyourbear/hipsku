@@ -1102,7 +1102,7 @@ var _api = _interopRequireDefault(require("../api"));
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-var LINECOUNT = [3, 5, 3]; // selects a single word with a specific syllable count
+var LINECOUNT = [5, 7, 5]; // selects a single word with a specific syllable count
 // used in generateLine to add additional syllables, if necessary
 
 var pickWord = function pickWord() {
@@ -1210,7 +1210,7 @@ var parent = module.bundle.parent;
 if ((!parent || !parent.isParcelRequire) && typeof WebSocket !== 'undefined') {
   var hostname = "" || location.hostname;
   var protocol = location.protocol === 'https:' ? 'wss' : 'ws';
-  var ws = new WebSocket(protocol + '://' + hostname + ':' + "50618" + '/');
+  var ws = new WebSocket(protocol + '://' + hostname + ':' + "51399" + '/');
 
   ws.onmessage = function (event) {
     checkedAssets = {};

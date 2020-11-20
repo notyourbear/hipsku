@@ -1,26 +1,27 @@
 body {
   font-size: 10px;
   background-color: black;
-  background-image: url("/maria-svecova-small.c4e73190.jpg");
-  background-image: image-set(
-    url("/maria-svecova-xs.39e44a86.jpg") 1x,
-    url("/maria-svecova-small.c4e73190.jpg") 2x,
-    url("/maria-svecova-med.e11856d5.jpg") 3x
-  );
-  background-image: -webkit-image-set(
-    url("/maria-svecova-xs.39e44a86.jpg") 1x,
-    url("/maria-svecova-small.c4e73190.jpg") 2x,
-    url("/maria-svecova-med.e11856d5.jpg") 3x
-  );
-
-  background-size: cover;
-  background-repeat: no-repeat;
   height: 100vh;
   width: 100vw;
 }
 
+.background {
+  position: fixed;
+  width: 100%;
+  height: 100%;
+}
+
+img {
+  object-fit: cover;
+  width: 100%;
+  height: 100%;
+}
+
 .haiku {
-  margin: 5rem;
+  left: 2rem;
+  position: fixed;
+  top: 2rem;
+  z-index: 100;
 }
 
 .line-1,

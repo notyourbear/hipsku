@@ -3,6 +3,7 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="shortcut icon" href="./favicon.ico">
     <link
       rel="stylesheet"
       href="https://cdnjs.cloudflare.com/ajax/libs/meyer-reset/2.0/reset.min.css"
@@ -17,10 +18,15 @@
     <title>Hipsku - a hipster haiku generator</title>
   </head>
   <body>
+    <picture class="background">
+      <source srcset="./images/maria-svecova-med.jpg" media="(min-width: 800px)" />
+      <source srcset="./images/maria-svecova-small.jpg" media="(min-width: 500px)" />
+      <img src="./images/maria-svecova-xs.jpg" alt="" />
+    </picture>
     <article class="haiku">
-      <div class="line-1"></div>
-      <div class="line-2"></div>
-      <div class="line-3"></div>
+      <div class="line-1">trust fund charcoal. Green</div>
+      <div class="line-2">sustainable. Master cleanse</div>
+      <div class="line-3">vaporware, chia</div>
     </article>
     <script src="./index.js"></script>
   </body>
